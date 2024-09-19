@@ -22,7 +22,7 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   refresh_token: string;
 
   @Column({ default: 1 })

@@ -31,23 +31,24 @@ export class PostService {
   }
 
   async findAll(query: FilterPostDto): Promise<any> {
-    // const {page, items_per_page, search} = query
     const page = query.page ? Number(query.page) : 1;
     const items_per_page = query.items_per_page
       ? Number(query.items_per_page)
       : 10;
     const keyword = query.search ? query.search : '';
+    const category = query.category ? Number(query.category) : null;
     const skip = (page - 1) * items_per_page;
     const [res, total] = await this.postRepository.findAndCount({
       where: [
-        { title: Like('%' + keyword + '%') },
-        { description: Like('%' + keyword + '%') },
+        { title: Like('%' + keyword + '%'), category: { id: category } },
+        { description: Like('%' + keyword + '%'), category: { id: category } },
       ],
       order: { created_at: 'DESC' },
       skip,
       take: items_per_page,
       relations: {
         user: true,
+        category: true,
       },
       select: {
         user: {
@@ -56,6 +57,10 @@ export class PostService {
           last_name: true,
           email: true,
           avatar: true,
+        },
+        category: {
+          id: true,
+          name: true,
         },
       },
     });
@@ -77,6 +82,7 @@ export class PostService {
       where: { id },
       relations: {
         user: true,
+        category: true,
       },
       select: {
         user: {
@@ -85,6 +91,10 @@ export class PostService {
           email: true,
           status: true,
           avatar: true,
+        },
+        category: {
+          id: true,
+          name: true,
         },
       },
     });

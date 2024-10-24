@@ -1,27 +1,23 @@
-import { Category } from 'src/category/entities/category.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Post } from 'src/post/entities/post.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class Post {
+export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  title: string;
+  name: string;
 
   @Column()
   description: string;
-
-  @Column()
-  thumbnail: string;
 
   @Column({ type: 'int', default: 1 })
   status: number;
@@ -32,9 +28,6 @@ export class Post {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => User, (user) => user.posts)
-  user: User;
-
-  @ManyToOne(() => Category, (category) => category.posts)
-  category: Category;
+  @OneToMany(() => Post, (post) => post.category)
+  posts: Post[];
 }

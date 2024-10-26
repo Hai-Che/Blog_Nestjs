@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseArrayPipe,
   Post,
   Put,
   Query,
@@ -55,6 +56,16 @@ export class UserController {
   @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(Number(id), updateUserDto);
+  }
+
+  // @UseGuards(AuthGuard)
+  @Delete('multiple')
+  multipleDelete(
+    @Query('ids', new ParseArrayPipe({ items: String, separator: ',' }))
+    ids: string[],
+  ) {
+    console.log(ids);
+    return this.userService.multipleDelete(ids);
   }
 
   @UseGuards(AuthGuard)

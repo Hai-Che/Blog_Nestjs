@@ -13,6 +13,7 @@ import UserAdd from './components/user/UserAdd.js';
 import UserUpdate from './components/user/UserUpdate.js';
 import PageNotFound from './components/PageNotFound.js';
 import Profile from './components/Profile.js';
+import PostList from './components/post/PostList.js';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/user/add" element={<UserAdd />} />
             <Route path="/user/edit/:id" element={<UserUpdate />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/posts" element={<PostList />} />
           </Route>
         </Route>
         <Route element={<PublicRoutes />}>

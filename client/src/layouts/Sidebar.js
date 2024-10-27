@@ -75,7 +75,7 @@ const Sidebar = () => {
                 <Link to="/users" className="nav-link">
                   Add Post
                 </Link>
-                <Link to="/users" className="nav-link">
+                <Link to="/posts" className="nav-link">
                   List Posts
                 </Link>
               </nav>

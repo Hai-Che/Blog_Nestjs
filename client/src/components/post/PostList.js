@@ -7,9 +7,9 @@ import { Button, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { handleFormatDate } from '../../helpers/common';
 
-const UserList = () => {
+const PostList = () => {
   const dispatch = useDispatch();
-  const [users, setUsers] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [numOfPage, setNumOfPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(1);
@@ -26,16 +26,25 @@ const UserList = () => {
       element: (row) => row.id,
     },
     {
-      name: 'First name',
-      element: (row) => row.first_name,
+      name: 'Title',
+      element: (row) => row.title,
     },
     {
-      name: 'Last name',
-      element: (row) => row.last_name,
+      name: 'Thumbnail',
+      element: (row) => (
+        <img
+          width="70px"
+          src={`http://localhost:5000/post/${row.thumbnail.split('\\')[2]}`}
+        />
+      ),
     },
     {
-      name: 'Email',
-      element: (row) => row.email,
+      name: 'Description',
+      element: (row) => row.description,
+    },
+    {
+      name: 'Status',
+      element: (row) => row.status,
     },
     {
       name: 'Created at',
@@ -50,7 +59,7 @@ const UserList = () => {
       element: (row) => (
         <>
           <Link
-            to={`/user/edit/${row.id}`}
+            to={`/post/edit/${row.id}`}
             className="btn btn-sm btn-warning me-1"
           >
             <i className="fa fa-pencil"></i> Edit
@@ -84,7 +93,7 @@ const UserList = () => {
   const requestDeleteApi = () => {
     if (deleteType === 'single') {
       dispatch(actions.controlLoading(true));
-      requestApi(`/users/${deleteItem}`, 'DELETE', [])
+      requestApi(`/posts/${deleteItem}`, 'DELETE', [])
         .then((response) => {
           setShowModal(false);
           setRefresh(Date.now());
@@ -97,7 +106,7 @@ const UserList = () => {
         });
     } else {
       dispatch(actions.controlLoading(true));
-      requestApi(`/users/multiple?ids=${selectedRows.toString()}`, 'DELETE', [])
+      requestApi(`/posts/multiple?ids=${selectedRows.toString()}`, 'DELETE', [])
         .then((response) => {
           setShowModal(false);
           setRefresh(Date.now());
@@ -115,10 +124,10 @@ const UserList = () => {
   useEffect(() => {
     dispatch(actions.controlLoading(true));
     let query = `?items_per_page=${itemsPerPage}&page=${currentPage}&search=${searchString}`;
-    requestApi(`/users${query}`, 'GET', [])
+    requestApi(`/posts${query}`, 'GET', [])
       .then((response) => {
         console.log('response=> ', response);
-        setUsers(response.data.data);
+        setPosts(response.data.data);
         setNumOfPage(response.data.lastPage);
         dispatch(actions.controlLoading(false));
       })
@@ -138,11 +147,11 @@ const UserList = () => {
               <Link to="/">Dashboard</Link>
             </li>
             <li className="breadcrumb-item">
-              <Link to="/users">User</Link>
+              <Link to="/posts">Post</Link>
             </li>
           </ol>
           <div className="mb-3">
-            <Link to="/user/add" className="btn btn-sm btn-success me-2">
+            <Link to="/post/add" className="btn btn-sm btn-success me-2">
               <i className="fa fa-plus"></i> Add new
             </Link>
             {/* </button> */}
@@ -157,15 +166,15 @@ const UserList = () => {
             )}
           </div>
           <DataTable
-            name="List Users"
-            data={users}
+            name="List Posts"
+            data={posts}
             columns={columns}
             numOfPage={numOfPage}
             currentPage={currentPage}
             onPageChange={setCurrentPage}
             onChangeItemsPerPage={setItemsPerPage}
             onKeySearch={(keyword) => {
-              console.log('keyword in user list comp=> ', keyword);
+              console.log('keyword in post list comp=> ', keyword);
               setSearchString(keyword);
             }}
             onSelectedRows={(rows) => {
@@ -191,4 +200,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default PostList;

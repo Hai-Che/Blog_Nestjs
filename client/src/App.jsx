@@ -11,6 +11,8 @@ import Layout from './layouts/Layout';
 import UserList from './components/user/UserList';
 import UserAdd from './components/user/UserAdd.js';
 import UserUpdate from './components/user/UserUpdate.js';
+import PageNotFound from './components/PageNotFound.js';
+import Profile from './components/Profile.js';
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
             <Route path="/users" element={<UserList />} />
             <Route path="/user/add" element={<UserAdd />} />
             <Route path="/user/edit/:id" element={<UserUpdate />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Route>
         <Route element={<PublicRoutes />}>
@@ -29,6 +32,7 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Route>
       </Route>
+      <Route path="*" element={<PageNotFound />}></Route>
     </Routes>
   );
 }

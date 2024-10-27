@@ -41,6 +41,12 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
+  @Get('profile')
+  findDetail(@Req() req: any): Promise<User> {
+    return this.userService.findOne(Number(req.user_data.id));
+  }
+
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string): Promise<User> {
     return this.userService.findOne(Number(id));

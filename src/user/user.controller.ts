@@ -10,13 +10,12 @@ import {
   Put,
   Query,
   Req,
+  SetMetadata,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
@@ -24,6 +23,7 @@ import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { storageConfig } from 'src/helpers/config';
 import { extname } from 'path';
+import { Roles } from 'src/auth/decorator/roles.decorator';
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -31,7 +31,7 @@ import { extname } from 'path';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @UseGuards(AuthGuard)
+  @Roles('Admin')
   @ApiQuery({ name: 'page' })
   @ApiQuery({ name: 'items_per_page' })
   @ApiQuery({ name: 'search' })
@@ -40,31 +40,30 @@ export class UserController {
     return this.userService.findAll(query);
   }
 
-  @UseGuards(AuthGuard)
+  @Roles('Admin')
   @Get('profile')
   findDetail(@Req() req: any): Promise<User> {
     return this.userService.findOne(Number(req.user_data.id));
   }
 
-  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string): Promise<User> {
     return this.userService.findOne(Number(id));
   }
 
-  @UseGuards(AuthGuard)
+  @Roles('Admin')
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.create(createUserDto);
   }
 
-  @UseGuards(AuthGuard)
+  @Roles('Admin')
   @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(Number(id), updateUserDto);
   }
 
-  // @UseGuards(AuthGuard)
+  @Roles('Admin')
   @Delete('multiple')
   multipleDelete(
     @Query('ids', new ParseArrayPipe({ items: String, separator: ',' }))
@@ -74,13 +73,12 @@ export class UserController {
     return this.userService.multipleDelete(ids);
   }
 
-  @UseGuards(AuthGuard)
+  @Roles('Admin')
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.userService.delete(Number(id));
   }
 
-  @UseGuards(AuthGuard)
   @Post('upload-avatar')
   @UseInterceptors(
     FileInterceptor('avatar', {

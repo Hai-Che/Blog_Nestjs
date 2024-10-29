@@ -53,7 +53,7 @@ const UserList = () => {
             to={`/user/edit/${row.id}`}
             className="btn btn-sm btn-warning me-1"
           >
-            <i className="fa fa-pencil"></i> Edit
+            <i className="fa fa-pencil"></i>
           </Link>
 
           <button
@@ -61,7 +61,7 @@ const UserList = () => {
             className="btn btn-sm btn-danger me-1"
             onClick={() => handleDelete(row.id)}
           >
-            <i className="fa fa-trash"></i> Delete
+            <i className="fa fa-trash"></i>
           </button>
         </>
       ),

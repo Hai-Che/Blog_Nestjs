@@ -14,6 +14,8 @@ import UserUpdate from './components/user/UserUpdate.js';
 import PageNotFound from './components/PageNotFound.js';
 import Profile from './components/Profile.js';
 import PostList from './components/post/PostList.js';
+import PostAdd from './components/post/PostAdd.js';
+import PostUpdate from './components/post/PostUpdate.js';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
             <Route path="/user/edit/:id" element={<UserUpdate />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/posts" element={<PostList />} />
+            <Route path="/post/add" element={<PostAdd />} />
+            <Route path="/post/edit/:id" element={<PostUpdate />} />
           </Route>
         </Route>
         <Route element={<PublicRoutes />}>

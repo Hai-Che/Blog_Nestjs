@@ -30,6 +30,10 @@ const PostList = () => {
       element: (row) => row.title,
     },
     {
+      name: 'Summary',
+      element: (row) => row.summary,
+    },
+    {
       name: 'Thumbnail',
       element: (row) => (
         <img
@@ -44,7 +48,7 @@ const PostList = () => {
     },
     {
       name: 'Status',
-      element: (row) => row.status,
+      element: (row) => (row.status == 1 ? 'Active' : 'Inactive'),
     },
     {
       name: 'Created at',
@@ -62,7 +66,7 @@ const PostList = () => {
             to={`/post/edit/${row.id}`}
             className="btn btn-sm btn-warning me-1"
           >
-            <i className="fa fa-pencil"></i> Edit
+            <i className="fa fa-pencil"></i>
           </Link>
 
           <button
@@ -70,7 +74,7 @@ const PostList = () => {
             className="btn btn-sm btn-danger me-1"
             onClick={() => handleDelete(row.id)}
           >
-            <i className="fa fa-trash"></i> Delete
+            <i className="fa fa-trash"></i>
           </button>
         </>
       ),
